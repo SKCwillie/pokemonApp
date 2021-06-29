@@ -1,185 +1,180 @@
-class Normal:
-    super_effective = []
-    effective = []
-    not_very_effective = ['rock', 'steel']
-    no_effect = ['ghost']
-    super_effective_against = ['fighting']
-    effective_against = []
-    not_very_effective_against = []
-    no_effect_against = ['ghost']
+class Type:
+    def __init__(self, super_effective, effective, not_very_effective, no_effect,
+                 super_effective_against, effective_against, not_very_effective_against, no_effect_against):
+        self.super_effective = super_effective
+        self.effective = effective
+        self.not_very_effective = not_very_effective
+        self.no_effect = no_effect
+        self.super_effective_against = super_effective_against
+        self.effective_against = effective_against
+        self.not_very_effective_against = not_very_effective_against
+        self.no_effect_against = no_effect_against
 
-class Fighting:
-    super_effective = ['normal', 'rock', 'steel', 'ice', 'dark']
-    effective = []
-    not_very_effective = ['flying', 'poison', 'bug', 'psychic', 'fairy']
-    no_effect = ['ghost']
-    super_effective_against = ['flying', 'psychic', 'fairy']
-    effective_against = []
-    not_very_effective_against = ['rock', 'bug', 'dark']
-    no_effect_against = []
+normal = Type([],
+              [],
+              ['rock', 'steel'],
+              ['ghost'],
+              ['fighting'],
+              [],
+              [],
+              ['ghost'])
 
-class Flying:
-    super_effective = ['fighting', 'bug', 'grass']
-    effective = []
-    not_very_effective = ['rock', 'steel', 'electric']
-    no_effect = []
-    super_effective_against = ['rock', 'electric', 'ice']
-    effective_against = []
-    not_very_effective_against = ['fighting', 'bug', 'grass']
-    no_effect_against = ['ground']
+fighting = Type(['normal', 'rock', 'steel', 'ice', 'dark'],
+                [],
+                ['flying', 'poison', 'bug', 'psychic', 'fairy'],
+                ['ghost'],
+                ['flying', 'psychic', 'fairy'],
+                [],
+                ['rock', 'bug', 'dark'],
+                [])
 
-class Poison:
-    super_effective = ['grass', 'fairy']
-    effective = []
-    not_very_effective = ['poison', 'ground', 'rock', 'ghost']
-    no_effect = ['steel']
-    super_effective_against = ['ground', 'psychic']
-    effective_against = []
-    not_very_effective_against = ['fighting', 'poison', 'bug', 'grass', 'fairy']
-    no_effect_against = []
+flying = Type(['fighting', 'bug', 'grass'],
+              [],
+              ['rock', 'steel', 'electric'],
+              [],
+              ['rock', 'electric', 'ice'],
+              [],
+              ['fighting', 'bug', 'grass'],
+              ['ground'])
+
+poison = Type(['grass', 'fairy'],
+              [],
+              ['poison', 'ground', 'rock', 'ghost'],
+              ['steel'],
+              ['ground', 'psychic'],
+              [],
+              ['fighting', 'poison', 'bug', 'grass', 'fairy'],
+              [])
 
 
-class Ground:
-    super_effective = ['electric', 'fire', 'poison', 'rock', 'steel']
-    effective = []
-    not_very_effective = ['bug', 'grass']
-    no_effect = ['flying']
-    super_effective_against = ['grass', 'ice', 'water']
-    effective_against = []
-    not_very_effective_against = ['poison', 'rock']
-    no_effect_against = ['electric']
+ground = Type(['electric', 'fire', 'poison', 'rock', 'steel'],
+              [],
+              ['bug', 'grass'],
+              ['flying'],
+              ['grass', 'ice', 'water'],
+              [],
+              ['poison', 'rock'],
+              ['electric'])
 
-class Rock:
-    super_effective = ['bug', 'fire', 'flying', 'ice']
-    effective = []
-    not_very_effective = ['fighting', 'ground', 'steel']
-    no_effect = []
-    super_effective_against = ['fighting', 'grass', 'ground', 'steel', 'water']
-    effective_against = []
-    not_very_effective_against = ['fire', 'flying', 'normal', 'poison']
-    no_effect_against = []
+rock = Type(['bug', 'fire', 'flying', 'ice'],
+            [],
+            ['fighting', 'ground', 'steel'],
+            [],
+            ['fighting', 'grass', 'ground', 'steel', 'water'],
+            [],
+            ['fire', 'flying', 'normal', 'poison'],
+            [])
 
-class Bug:
-    super_effective = ['dark', 'grass', 'psychic']
-    effective = []
-    not_very_effective = ['fairy', 'fighting', 'fire', 'flying', 'ghost', 'poison', 'steel']
-    no_effect = []
-    super_effective_against = ['fire', 'flying', 'rock']
-    effective_against = []
-    not_very_effective_against = ['fighting', 'grass', 'ground']
-    no_effect_against = []
+bug = Type(['dark', 'grass', 'psychic'],
+           [],
+           ['fairy', 'fighting', 'fire', 'flying', 'ghost', 'poison', 'steel'],
+           [],
+           ['fire', 'flying', 'rock'],
+           [],
+           ['fighting', 'grass', 'ground'],
+           [])
 
-class Ghost:
-    super_effective = ['ghost', 'psychic']
-    effective = []
-    not_very_effective = ['dark', 'steel']
-    no_effect = ['normal']
-    super_effective_against = ['ghost', 'dark']
-    effective_against = []
-    not_very_effective_against = ['bug', 'poison']
-    no_effect_against = ['normal', 'fighting']
+ghost = Type(['ghost', 'psychic'],
+             [],
+             ['dark', 'steel'],
+             ['normal'],
+             ['ghost', 'dark'],
+             [],
+             ['bug', 'poison'],
+             ['normal', 'fighting'])
 
-class Steel:
-    super_effective = ['fairy', 'ice', 'rock']
-    effective = []
-    not_very_effective = ['electric', 'fire', 'water', 'steel']
-    no_effect = []
-    super_effective_against = ['fighting', 'fire', 'ground']
-    effective_against = []
-    not_very_effective_against = ['bug', 'dragon', 'fairy', 'flying', 'grass', 'ice', 'normal', 'psychic', 'rock', 'steel']
-    no_effect_against = ['poison']
+steel = Type(['fairy', 'ice', 'rock'],
+             [],
+             ['electric', 'fire', 'water', 'steel'],
+             [],
+             ['fighting', 'fire', 'ground'],
+             [],
+             ['bug', 'dragon', 'fairy', 'flying', 'grass', 'ice', 'normal', 'psychic', 'rock', 'steel'],
+             ['poison'])
 
-class Fire:
-    super_effective = ['bug', 'grass', 'ice', 'steel']
-    effective = []
-    not_very_effective = ['dragon', 'fire', 'rock', 'water']
-    no_effect = []
-    super_effective_against = ['ground', 'rock', 'water']
-    effective_against = []
-    not_very_effective_against = ['bug', 'fairy', 'fire', 'grass', 'ice', 'steel']
-    no_effect_against = []
+fire = Type(['bug', 'grass', 'ice', 'steel'],
+            [],
+            ['dragon', 'fire', 'rock', 'water'],
+            [],
+            ['ground', 'rock', 'water'],
+            [],
+            ['bug', 'fairy', 'fire', 'grass', 'ice', 'steel'],
+            [])
 
-class Water:
-    super_effective = ['fire', 'ground', 'rock']
-    effective = []
-    not_very_effective = ['dragon', 'grass', 'water']
-    no_effect = []
-    super_effective_against = ['electric', 'grass']
-    effective_against = []
-    not_very_effective_against = ['fire', 'ice', 'steel', 'water']
-    no_effect_against = []
+water = Type(['fire', 'ground', 'rock'],
+             [],
+             ['dragon', 'grass', 'water'],
+             [],
+             ['electric', 'grass'],
+             [],
+             ['fire', 'ice', 'steel', 'water'],
+             [])
 
-class Grass:
-    super_effective = ['ground', 'rock', 'water']
-    effective = []
-    not_very_effective = ['bug', 'dragon', 'fire', 'flying', 'grass', 'poison', 'steel']
-    no_effect = []
-    super_effective_against = ['bug', 'fire', 'flying', 'ice', 'poison']
-    effective_against = []
-    not_very_effective_against = ['electric', 'grass', 'ground', 'water']
-    no_effect_against = []
+grass = Type(['ground', 'rock', 'water'],
+             [],
+             ['bug', 'dragon', 'fire', 'flying', 'grass', 'poison', 'steel'],
+             [],
+             ['bug', 'fire', 'flying', 'ice', 'poison'],
+             [],
+             ['electric', 'grass', 'ground', 'water'],
+             [])
 
-class Electric:
-    super_effective = ['flying', 'water']
-    effective = []
-    not_very_effective = ['dragon', 'electric', 'grass']
-    no_effect = ['ground']
-    super_effective_against = ['ground']
-    effective_against = []
-    not_very_effective_against = ['electric', 'flying', 'steel']
-    no_effect_against = []
+electric = Type(['flying', 'water'],
+                [],
+                ['dragon', 'electric', 'grass'],
+                ['ground'],
+                ['ground'],
+                [],
+                ['electric', 'flying', 'steel'],
+                [])
 
-class Psychic:
-    super_effective = ['fighting', 'poison']
-    effective = []
-    not_very_effective = ['psychic', 'steel']
-    no_effect = []
-    super_effective_against = ['bug', 'dark', 'ghost']
-    effective_against = []
-    not_very_effective_against = ['fighting', 'psychic']
-    no_effect_against = []
+psychic = Type(['fighting', 'poison'],
+               [],
+               ['psychic', 'steel'],
+               [],
+               ['bug', 'dark', 'ghost'],
+               [],
+               ['fighting', 'psychic'],
+               [])
 
-class Ice:
-    super_effective = ['dragon', 'flying', 'grass', 'ground']
-    effective = []
-    not_very_effective = ['fire', 'ice', 'steel', 'water']
-    no_effect = []
-    super_effective_against = ['fighting', 'fire', 'rock', 'steel']
-    effective_against = []
-    not_very_effective_against = ['ice']
-    no_effect_against = []
+ice = Type(['dragon', 'flying', 'grass', 'ground'],
+           [],
+           ['fire', 'ice', 'steel', 'water'],
+           [],
+           ['fighting', 'fire', 'rock', 'steel'],
+           [],
+           ['ice'],
+           [])
 
-class Dragon:
-    super_effective = ['dragon']
-    effective = []
-    not_very_effective = ['steel']
-    no_effect = ['fairy']
-    super_effective_against = ['dragon', 'fairy', 'ice']
-    effective_against = []
-    not_very_effective_against = ['electric', 'fire', 'grass', 'water']
-    no_effect_against = []
+dragon = Type(['dragon'],
+              [],
+              ['steel'],
+              ['fairy'],
+              ['dragon', 'fairy', 'ice'],
+              [],
+              ['electric', 'fire', 'grass', 'water'],
+              [])
 
-class Dark:
-    super_effective = ['ghost', 'psychic']
-    effective = []
-    not_very_effective = ['dark', 'fighting', 'fairy']
-    no_effect = []
-    super_effective_against = ['bug', 'fairy', 'fighting']
-    effective_against = []
-    not_very_effective_against = ['dark', 'ghost']
-    no_effect_against = ['psychic']
+dark = Type(['ghost', 'psychic'],
+            [],
+            ['dark', 'fighting', 'fairy'],
+            [],
+            ['bug', 'fairy', 'fighting'],
+            [],
+            ['dark', 'ghost'],
+            ['psychic'])
 
-class Fairy:
-    super_effective = ['dark', 'dragon', 'fighting']
-    effective = []
-    not_very_effective = ['fire', 'poison', 'steel']
-    no_effect = []
-    super_effective_against = ['poison', 'steel']
-    effective_against = []
-    not_very_effective_against = ['bug', 'dark', 'fighting']
-    no_effect_against = ['dragon']
+fairy = Type(['dark', 'dragon', 'fighting'],
+             [],
+             ['fire', 'poison', 'steel'],
+             [],
+             ['poison', 'steel'],
+             [],
+             ['bug', 'dark', 'fighting'],
+             ['dragon'])
 
-class_list = [Normal, Fighting, Flying, Poison, Ground, Rock, Bug, Ghost, Steel, Fire, Water, Grass, Electric, Psychic, Ice, Dragon, Dark, Fairy]
+class_list = [normal, fighting, flying, poison, ground, rock, bug, ghost, steel, fire, water,
+              grass, electric, psychic, ice, dragon, dark, fairy]
 mon_types = ('normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy')
 
 for i in class_list:
