@@ -35,7 +35,6 @@ class Pokemon(object):
 
         if pd.isnull(self.type_2):
             self.num_types = 1
-
         else:
             self.num_types = 2
 
@@ -81,8 +80,6 @@ class Pokemon(object):
                     self.offense[self.type_list[k]] = self.offense_2[k]
                     self.offense_list.append(self.offense_2[k])
 
-
-
     def get_name(self):
         return self.name
 
@@ -95,9 +92,9 @@ class Pokemon(object):
             return self.type_1, self.type_2
 
     def get_abilities(self):
-        for l in range(len(self.ability_list) - 1):
-            if pd.isnull(self.ability_list[l]):
-                self.ability_list.pop(l)
+        for i in range(len(self.ability_list) - 1):
+            if pd.isnull(self.ability_list[i]):
+                self.ability_list.pop(i)
         if pd.isnull(self.hidden):
             return tuple(self.ability_list)
         else:
@@ -127,12 +124,10 @@ def get_input():
 
 
 if __name__ == "__main__":
-    user_input = get_input()
-    myMon = Pokemon(user_input)
+    my_input = get_input()
+    myMon = Pokemon(my_input)
     print(myMon.get_name())
     print(myMon.get_types())
     print(myMon.get_abilities())
     print(myMon.get_defense())
     print(myMon.get_offense())
-
-
