@@ -1,107 +1,92 @@
-import mon_classes
-mon_types_dict = mon_classes.mon_types_dict
-mon_types = mon_classes.mon_types
-
-def get_input():
-    user_input = input("Enter Pokemon type: ").lower()
-    if user_input == 'exit':
-        return
-    return user_input
-
-def check_input(user_input):
-    if user_input not in mon_classes.mon_types:
-        print("Not a valid choice. Please try again.")
-        print("Type 'Exit' to stop app.")
-        return get_input()
-
-def get_second_type():
-    check = input("Do you want to enter another type? [Y/n]: ")
-    if check.upper() == 'Y':
-        return get_input()
-    elif check.upper() == 'N':
-        return
-    else:
-        print("Not a valid choice. Please try again")
-        return get_second_type()
-
-def get_defense(type1, type2):
-    """Return a list of lists of damge modifiers[4x, 2x, 1x, 1/2x, 1/4x, 0]
-    Keyword Arguments:
-        type1 -- type, as a string
-        type2 -- type, as a string, or None if not applicable
-    """
-    dmg_4 = []
-    dmg_2 = []
-    dmg_1 = []
-    dmg_half = []
-    dmg_quarter = []
-    dmg_0 = []
-    added_to = []
-
-    type1_super_effective = mon_types_dict[type1].super_effective_against
-    type1_effective = mon_types_dict[type1].effective_against
-    type1_not_very_effective = mon_types_dict[type1].not_very_effective_against
-    type1_no_effect = mon_types_dict[type1].no_effect_against
-
-    if type2 != None:
-        type2_super_effective = mon_types_dict[type2].super_effective_against
-        type2_effective = mon_types_dict[type2].effective_against
-        type2_not_very_effective = mon_types_dict[type2].not_very_effective_against
-        type2_no_effect = mon_types_dict[type2].no_effect_against
-        for i in type1_super_effective:
-            if i in type2_super_effective:
-                dmg_4.append(i)
-                added_to.append(i)
-        for i in type1_super_effective:
-            if i in type2_effective:
-                dmg_2.append(i)
-                added_to.append(i)
-        for i in type2_super_effective:
-            if i in type1_effective:
-                dmg_2.append(i)
-                added_to.append(i)
-        for i in type1_not_very_effective:
-            if i in type2_effective:
-                dmg_half.append(i)
-                added_to.append(i)
-        for i in type2_not_very_effective:
-            if i in type1_effective:
-                dmg_half.append(i)
-                added_to.append(i)
-        for i in type1_not_very_effective:
-            if i in type2_not_very_effective:
-                dmg_quarter.append(i)
-                added_to.append(i)
-        for i in type1_no_effect:
-            dmg_0.append(i)
-            added_to.append(i)
-        for i in type2_no_effect:
-            dmg_0.append(i)
-            added_to.append(i)
-        for i in mon_types:
-            if i not in added_to:
-                dmg_1.append(i)
-        return [dmg_4, dmg_2, dmg_1, dmg_half, dmg_quarter, dmg_0]
-    else:
-        dmg_2 = mon_types_dict[type1].super_effective_against
-        dmg_1 = mon_types_dict[type1].effective_against
-        dmg_half = mon_types_dict[type1].not_very_effective_against
-        dmg_0 = mon_types_dict[type1].no_effect_against
-        return [dmg_4, dmg_2, dmg_1, dmg_half, dmg_quarter, dmg_0]
-
-def print_defense(defense_list):
-    defense_values = ["4x", "2x", "1x", "1/2x", "1/4x", "0x"]
-    count = 0
-    for i in defense_list:
-        if len(defense_list[count])>=1:
-            print(defense_values[count], "damage from types", ", ".join(defense_list[count]))
-
-        count +=1
+import pandas as pd
 
 
-type1 = get_input()
-check_input(type1)
-type2 = get_second_type()
-defense = get_defense(type1, type2)
-print_defense(defense)
+df = pd.read_csv('./pokemon.csv')
+type_chart = pd.read_csv('./type_chart.csv')
+"""
+For type_chart, the rows represent offense modifiers for given type
+                the columns represent defense modifiers for that given type
+"""
+index_key = {}
+count = 0
+for i in df['name']:
+    index_key[i] = count
+    count += 1
 
+
+class Pokemon(object):
+    def __init__(self, index):
+        self.index = index
+        self.name = df.at[self.index, 'name']
+        self.type_1 = df.at[self.index, 'type_1']
+        self.type_2 = df.at[self.index, 'type_2']
+
+        if pd.isnull(self.type_2):
+            self.num_types = 1
+
+        else:
+            self.num_types = 2
+
+        self.ability_1 = df.at[self.index, 'ability_1']
+        self.ability_2 = df.at[self.index, 'ability_2']
+        if pd.isnull(self.ability_2):
+            self.num_abilities = 1
+        else:
+            self.num_abilities = 2
+
+        self.hidden = df.at[self.index, 'ability_hidden']
+
+        self.defense = {}
+        self.type_list = type_chart['Type'].to_list()
+        self.defense_1 = type_chart[self.type_1].to_list()
+        self.defense_2 = type_chart[self.type_2].to_list()
+
+        if pd.isnull(self.type_2):
+            for j in range(len(self.type_list)):
+                self.defense[self.type_list[j]] = self.defense_1[j]
+        else:
+            for k in range(len(self.type_list)):
+                self.defense[self.type_list[k]] = self.defense_1[k] * self.defense_2[k]
+
+    def get_name(self):
+        return self.name
+
+    def get_types(self):
+        if pd.isnull(self.type_2):
+            self.num_types = 1
+            return self.type_1
+        else:
+            self.num_types = 2
+            return self.type_1, self.type_2
+
+    def get_abilities(self):
+        if pd.isnull(self.ability_2):
+            return self.ability_1
+        else:
+            return self.ability_1, self.ability_2
+
+    def get_hidden(self):
+        if pd.isnull(self.hidden):
+            return 'None'
+        else:
+            return self.hidden
+
+    def get_defense(self):
+        return self.defense
+
+
+def get_index():
+    user_input = input("Enter Pokemon name:  ").title()
+    try:
+        index = index_key[user_input]
+    except KeyError:
+        print("Not a valid pokemon. Please try again.")
+        return get_index()
+    return index
+
+
+myIndex = get_index()
+myMon = Pokemon(myIndex)
+print(myMon.get_name())
+print(myMon.get_types())
+print(myMon.get_defense())
